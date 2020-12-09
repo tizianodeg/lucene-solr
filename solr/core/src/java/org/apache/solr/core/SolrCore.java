@@ -359,6 +359,8 @@ public final class SolrCore implements SolrInfoBean, SolrMetricProducer, Closeab
     if (similarityFactory instanceof SolrCoreAware) {
       ((SolrCoreAware) similarityFactory).inform(this);
     }
+    replacementSchema.postReadInform();
+    replacementSchema.refreshAnalyzers();
     this.schema = replacementSchema;
   }
 

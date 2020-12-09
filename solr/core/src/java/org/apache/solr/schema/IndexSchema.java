@@ -627,7 +627,7 @@ public class IndexSchema {
     log.info("Loaded schema {}/{} with uniqueid field {}", name, version, uniqueKeyFieldName);
   }
 
-  protected void postReadInform() {
+  public void postReadInform() {
     //Run the callbacks on SchemaAware now that everything else is done
     for (SchemaAware aware : schemaAware) {
       aware.inform(this);

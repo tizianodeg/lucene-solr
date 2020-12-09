@@ -429,10 +429,6 @@ public final class ManagedIndexSchema extends IndexSchema {
         }
       }
 
-      newSchema.postReadInform();
-
-      newSchema.refreshAnalyzers();
-
       if(persist) {
         success = newSchema.persistManagedSchema(false); // don't just create - update it if it already exists
         if (success) {
@@ -477,8 +473,7 @@ public final class ManagedIndexSchema extends IndexSchema {
           throw new SolrException(ErrorCode.BAD_REQUEST, msg);
         }
       }
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+       
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -564,10 +559,8 @@ public final class ManagedIndexSchema extends IndexSchema {
         for (DynamicCopy dynamicCopy : dynamicCopyFieldsToRebuild) {
           newSchema.registerCopyField(dynamicCopy.getRegex(), dynamicCopy.getDestFieldName(), dynamicCopy.getMaxChars());
         }
-      }
-
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+      } 
+     
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -603,9 +596,6 @@ public final class ManagedIndexSchema extends IndexSchema {
           }
         }
       }
-
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
       if (persist) {
         success = newSchema.persistManagedSchema(false); // don't just create - update it if it already exists
         if (success) {
@@ -683,8 +673,7 @@ public final class ManagedIndexSchema extends IndexSchema {
         }
       }
 
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+      
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -752,8 +741,7 @@ public final class ManagedIndexSchema extends IndexSchema {
         }
       }
 
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+      
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -775,8 +763,7 @@ public final class ManagedIndexSchema extends IndexSchema {
           newSchema.registerCopyField(entry.getKey(), destination);
         }
       }
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+       
       if(persist) {
         success = newSchema.persistManagedSchema(false); // don't just create - update it if it already exists
         if (success) {
@@ -802,9 +789,7 @@ public final class ManagedIndexSchema extends IndexSchema {
       newSchema = shallowCopy(true);
       for (String destination : destinations) {
         newSchema.registerCopyField(source, destination, maxChars);
-      }
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+      } 
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -832,8 +817,7 @@ public final class ManagedIndexSchema extends IndexSchema {
           newSchema.deleteCopyField(entry.getKey(), destination);
         }
       }
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+       
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -978,10 +962,7 @@ public final class ManagedIndexSchema extends IndexSchema {
       newSchema.fieldTypes.put(typeName, fieldType);
     }
 
-    newSchema.postReadInform();
-    
-    newSchema.refreshAnalyzers();
-
+   
     if (persist) {
       boolean success = newSchema.persistManagedSchema(false);
       if (success) {
@@ -1030,8 +1011,7 @@ public final class ManagedIndexSchema extends IndexSchema {
       for (String name : names) {
         newSchema.fieldTypes.remove(name);
       }
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+     
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -1165,8 +1145,7 @@ public final class ManagedIndexSchema extends IndexSchema {
       }
       newSchema.rebuildCopyFields(copyFieldsToRebuild);
 
-      newSchema.postReadInform();
-      newSchema.refreshAnalyzers();
+      
     } else {
       String msg = "This ManagedIndexSchema is not mutable.";
       log.error(msg);
@@ -1176,7 +1155,7 @@ public final class ManagedIndexSchema extends IndexSchema {
   }
   
   @Override
-  protected void postReadInform() {
+  public void postReadInform() {
     super.postReadInform();
     for (FieldType fieldType : fieldTypes.values()) {
       informResourceLoaderAwareObjectsForFieldType(fieldType);
